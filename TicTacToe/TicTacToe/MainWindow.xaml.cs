@@ -43,6 +43,9 @@ namespace TicTacToe
 
             DatabaseCommands database = new DatabaseCommands();
 
+            database.AddEntry();
+            database.DeleteById(2);
+
             foreach (var entry in database.GetAll()) {
                 dataGrid.Items.Add(entry);
             }

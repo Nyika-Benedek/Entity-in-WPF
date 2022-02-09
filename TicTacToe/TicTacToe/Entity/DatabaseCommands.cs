@@ -10,15 +10,17 @@ namespace TicTacToe.Entity
     {
         DatabaseContextFactory databaseFactory = new DatabaseContextFactory();
 
-        public void AddEntry(DatabaseStructure entry) {
+        public void AddEntry() {
             using var connection = databaseFactory.CreateDbContext(new string[0]); {
-                connection.database.Add(entry);
+                connection.database.Add(new DatabaseStructure());
+                connection.SaveChanges();
             }
         }
 
         public List<DatabaseStructure> GetAll() {
             using var connection = databaseFactory.CreateDbContext(new string[0]);
             {
+                connection.SaveChanges();
                 return connection.database.ToList();
             }
         }
@@ -27,6 +29,7 @@ namespace TicTacToe.Entity
             using var connection = databaseFactory.CreateDbContext(new string[0]);
             {
                 connection.Remove(connection.database.Find(id));
+                connection.SaveChanges();
             }
         }
     }
