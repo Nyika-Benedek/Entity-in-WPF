@@ -20,7 +20,6 @@ namespace TicTacToe.Entity
         public List<DatabaseStructure> GetAll() {
             using var connection = databaseFactory.CreateDbContext(new string[0]);
             {
-                connection.SaveChanges();
                 return connection.database.ToList();
             }
         }
@@ -28,7 +27,22 @@ namespace TicTacToe.Entity
         public void DeleteById(int id) {
             using var connection = databaseFactory.CreateDbContext(new string[0]);
             {
-                connection.Remove(connection.database.Find(id));
+                var entry = connection.database.Find(id);
+                if (!(entry is null))
+                {
+                    connection.Remove(connection.database.Find(id));
+                    connection.SaveChanges();
+                }
+            }
+        }
+
+        public void UpdateById(int id) {
+            using var connection = databaseFactory.CreateDbContext(new string[0]);
+            {
+                var entry = connection.database.Find(id);
+                entry.date = DateTime.Now;
+
+                connection.Update(entry);
                 connection.SaveChanges();
             }
         }
